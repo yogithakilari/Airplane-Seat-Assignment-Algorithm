@@ -29,6 +29,74 @@ This project uses a constraint-based scoring approach.
 First, the algorithm checks hard rules that cannot be broken.  
 Then, it scores valid seat options and chooses the best allocation based on passenger preferences, group seating, paid seat selection, and priority.
 
+## Flow Chart of the Algorithm
+
+                                  ┌───────────────┐
+                                  │     START     │
+                                  └───────┬───────┘
+                                          │
+                                          ▼
+                     ┌──────────────────────────────────┐
+                     │ Read Input                       │
+                     │ - Seat Layout                    │
+                     │ - Number of Passengers           │
+                     └───────────────┬──────────────────┘
+                                     │
+                                     ▼
+                   ┌────────────────────────────────────┐
+                   │ Create Airplane Seating Matrix     │
+                   └───────────────┬────────────────────┘
+                                   │
+                                   ▼
+              ┌─────────────────────────────────────────────┐
+              │ Identify Seat Types                         │
+              │ • Aisle Seats                               │
+              │ • Window Seats                              │
+              │ • Center Seats                              │
+              └───────────────┬─────────────────────────────┘
+                              │
+                              ▼
+               ┌────────────────────────────────────┐
+               │ Allocate Aisle Seats First         │
+               └───────────────┬────────────────────┘
+                               │
+                               ▼
+                  ┌─────────────────────────┐
+                  │ Aisle Seats Remaining ? │
+                  └───────┬─────────┬───────┘
+                          │Yes      │No
+                          ▼         ▼
+                ┌──────────────┐   ┌──────────────────────────┐
+                │ Assign Seat  │   │ Allocate Window Seats    │
+                └──────┬───────┘   └─────────────┬────────────┘
+                       │                         │
+                       └─────────────┐           ▼
+                                     │   ┌──────────────────────────┐
+                                     │   │ Window Seats Remaining ? │
+                                     │   └──────┬──────────┬────────┘
+                                     │          │Yes       │No
+                                     │          ▼          ▼
+                                     │   ┌─────────────┐  ┌──────────────────────┐
+                                     │   │ Assign Seat │  │ Allocate Center Seats│
+                                     │   └─────┬───────┘  └──────────┬───────────┘
+                                     │         │                     │
+                                     └─────────┘                     ▼
+                                              ┌────────────────────────────┐
+                                              │ Center Seats Remaining ?   │
+                                              └──────┬───────────┬─────────┘
+                                                     │Yes        │No
+                                                     ▼           ▼
+                                             ┌─────────────┐  ┌─────────────────────┐
+                                             │ Assign Seat │  │ Display Final Seat  │
+                                             └─────┬───────┘  │ Arrangement         │
+                                                   │          └──────────┬──────────┘
+                                                   └─────────────────────┘
+                                                                  │
+                                                                  ▼
+                                                         ┌────────────────┐
+                                                         │      END       │
+                                                         └────────────────┘
+
 ## Hard Rules
 
 The algorithm checks:
